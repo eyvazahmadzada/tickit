@@ -1,7 +1,7 @@
-import Task from '../../models/Task'
+import { Task } from '../../models'
 import fetch from '../interceptor'
 
-const tasksService: { [index: string]: Function } = {}
+const tasksService: { [index: string]: (...args: any[]) => Promise<any> } = {}
 
 tasksService.create = async (data: Task): Promise<any> => {
   return fetch({

@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import Router from 'next/router'
-import { API_BASE_URL } from '../constants/config'
+import { API_BASE_URL } from '../constants'
 
 // Configure request params
 const config: AxiosRequestConfig = {
@@ -13,10 +13,9 @@ const PUBLIC_REQUEST_KEY: string = 'public-request'
 
 // Intercept request
 service.interceptors.request.use(
-  ({ headers }: AxiosRequestConfig) => {
-    if (headers && !headers[PUBLIC_REQUEST_KEY]) {
+  (config: AxiosRequestConfig) => {
+    if (config.headers && !config.headers[PUBLIC_REQUEST_KEY]) {
       Router.push(ENTRY_ROUTE)
-      Router.reload()
     }
 
     return config
