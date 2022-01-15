@@ -7,16 +7,15 @@ import { COLORS } from "../../constants"
 const AddInputStyle = styled.div`
   width: 100%;
   position: relative;
+  overflow: hidden;
 
   > input {
-    border-radius: 10px;
-    height: 48px;
     width: 100%;
     padding-left: 24px;
     padding-right: 52px;
+    height: 100%;
     width: 100%;
     font-weight: 500;
-    filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.25));
 
     &:placeholder {
       color: rgba(0, 32, 63, 0.4);
@@ -36,16 +35,32 @@ const AddInputStyle = styled.div`
     top: 50%;
     transform: translateY(-50%);
     z-index: 1;
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: default;
+    }
   }
 `
 
-const AddInput: NextPage = () => {
+interface Props {
+  onAddTask: (content: string) => void
+}
+
+const AddInput: NextPage<Props> = ({ onAddTask }) => {
   const [value, setValue] = useState('')
 
+  const addTask = () => {
+    if (value) {
+      onAddTask(value)
+      setValue('')
+    }
+  }
+
   return (
-    <AddInputStyle>
+    <AddInputStyle className="card">
       <input type="text" placeholder="Add task" onChange={e => setValue(e.target.value)} value={value} />
-      <button>
+      <button onClick={addTask} disabled={!value}>
         <img src="/icons/plus.svg" alt="plus" />
       </button>
     </AddInputStyle>

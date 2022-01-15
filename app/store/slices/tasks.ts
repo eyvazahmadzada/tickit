@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
 import tasksService from '../../api/services/tasksService'
 import { Task } from '../../models'
 
@@ -26,7 +26,8 @@ export const updateTask = createAsyncThunk(
 )
 
 export const deleteTask = createAsyncThunk('tasks/delete', async (id: number) => {
-  return await tasksService.delete(id)
+  await tasksService.delete(id)
+  return id
 })
 
 const tasksSlice = createSlice({
@@ -51,9 +52,12 @@ const tasksSlice = createSlice({
       state.entities.splice(index, 1)
     })
 
-    // Use default pending and rejected behavior for all actions
+    // Use default loading behavior for all actions
     builder.addMatcher(isPending, (state) => {
       state.loading = true
+    })
+    builder.addMatcher(isFulfilled, (state) => {
+      state.loading = false
       state.error = null
     })
     builder.addMatcher(isRejected, (state) => {

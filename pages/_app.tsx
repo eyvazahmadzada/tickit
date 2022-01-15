@@ -7,8 +7,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <Head>
-        <title>TickIt!</title>
-        <meta name="title" content="TickIt!" />
+        <title>TickIt</title>
+        <meta name="title" content="TickIt" />
       </Head>
       <Component {...pageProps} />
     </Provider>

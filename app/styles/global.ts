@@ -1,7 +1,8 @@
 import { createGlobalStyle, css } from 'styled-components'
+import { COLORS } from '../constants'
 import { Theme } from '../models/index'
 
-const margins = [4, 8, 16, 24, 32]
+const margins = [4, 8, 16, 24, 32, 48]
 
 // Global
 export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
@@ -32,7 +33,10 @@ export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
   .card {
     border-radius: 10px;
     height: 48px;
-    filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.25));
+    filter: ${({ theme }) =>
+      theme.body === COLORS.dark
+        ? 'drop-shadow(2px 2px 2px rgba(250, 251, 251, 0.25))'
+        : 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.25))'};
   }
   
   // Generate spacing classes dynamically
@@ -47,4 +51,16 @@ export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
       )}
     `,
   )}
+
+  // Animations
+  @keyframes loader {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+  }
 `

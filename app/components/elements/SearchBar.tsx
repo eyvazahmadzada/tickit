@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 
 const SearchBarStyle = styled.div`
@@ -21,7 +21,6 @@ const SearchBarStyle = styled.div`
     padding-left: 52px;
     padding-right: 52px;
     height: 100%;
-    width: 100%;
     font-weight: 500;
 
     &:placeholder {
@@ -43,13 +42,25 @@ const SearchBarStyle = styled.div`
   }
 `
 
-const SearchBar: NextPage = () => {
+interface Props {
+  onValueChange: (value: string) => void
+}
+
+const SearchBar: NextPage<Props> = ({ onValueChange }) => {
   const [value, setValue] = useState('')
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onValueChange(value)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [value, onValueChange])
 
   return (
     <SearchBarStyle className="card">
       <img src="/icons/search.svg" alt="search" />
-      <input type="text" placeholder="Search tasks..." onChange={e => setValue(e.target.value)} value={value} />
+      <input type="text" placeholder="Search tasks..." onChange={(e) => setValue(e.target.value)} value={value} />
       <button onClick={() => setValue('')} className={value !== '' ? 'show' : ''}>
         <img src="/icons/close.svg" alt="close" />
       </button>

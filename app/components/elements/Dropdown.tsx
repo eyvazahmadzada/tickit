@@ -99,7 +99,14 @@ const Dropdown: NextPage<Props> = ({ icon, name, items, onSelectItem }) => {
       </button>
 
       <div className={`menu card ${isOpen ? 'open' : ''}`}>
-        {items.map(item => <button className="animate" key={item.key} onClick={() => selectItem(item)}>{item.name}</button>)}
+        {items.map(item =>
+          <button
+            className={`animate ${item === activeItem ? 'selected' : ''}`}
+            key={item.key} onClick={() => selectItem(item)}
+          >
+            {item.name}
+          </button>
+        )}
       </div>
     </DropdownStyle>
   )
