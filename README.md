@@ -1,5 +1,5 @@
 # Tick It!
-A simple to-do application built with Typescript, Next.js, Redux Toolkit, Styled Components and passion <3. <br />
+A simple to-do application built with Typescript, Next.js, Redux Toolkit, Styled Components. <br />
 
 ### Important links:
 - [Project design in Figma](https://www.figma.com/file/8ZffADyx3mke1goHuG0RPb/TickIt!?node-id=1%3A326)
