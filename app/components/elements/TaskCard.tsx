@@ -43,11 +43,12 @@ const TaskCardStyle = styled.div`
 interface Props {
   content: string
   status: 'done' | 'progress'
+  created_at: number | undefined
   onUpdate: (task: Task) => void
   onDelete: () => void
 }
 
-const TaskCard: NextPage<Props> = ({ content, status, onUpdate, onDelete }) => {
+const TaskCard: NextPage<Props> = ({ content, status, created_at, onUpdate, onDelete }) => {
   const [value, setValue] = useState(content)
   const [isDone, setIsDone] = useState(status === 'done')
   const [isEdit, setIsEdit] = useState(false)
@@ -66,7 +67,8 @@ const TaskCard: NextPage<Props> = ({ content, status, onUpdate, onDelete }) => {
       const task: Task = {
         content: value,
         status: isTaskDone ? 'done' : 'progress',
-        updated_at: Date.now()
+        updated_at: Date.now(),
+        created_at
       }
 
       onUpdate(task)

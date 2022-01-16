@@ -8,6 +8,7 @@ import SearchBar from "../app/components/elements/SearchBar"
 import Spinner from "../app/components/elements/Spinner"
 import Switcher from "../app/components/elements/Switcher"
 import TaskCard from "../app/components/elements/TaskCard"
+import Toast from "../app/components/elements/Toast"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { Task } from "../app/models"
 import { createTask, deleteTask, fetchTasks, updateTask } from "../app/store/slices/tasks"
@@ -29,6 +30,7 @@ const Home: NextPage = () => {
     })
   }
 
+  // Get saved theme choice
   useEffect(() => {
     const isDarkModeSaved = localStorage.getItem('darkMode') === 'true'
     setIsDarkMode(isDarkModeSaved)
@@ -75,6 +77,8 @@ const Home: NextPage = () => {
       <GlobalStyles />
 
       {tasksState.loading ? <Spinner /> : null}
+      <Toast type="success" message={tasksState.success} />
+      <Toast type="error" message={tasksState.error} />
       <Wrapper>
         <Header>
           <Headline>
@@ -105,6 +109,7 @@ const Home: NextPage = () => {
               key={task.id}
               content={task.content}
               status={task.status}
+              created_at={task.created_at}
               onUpdate={(updatedTask: Task) => handleUpdateTask(task.id || 0, updatedTask)}
               onDelete={() => handleDeleteTask(task.id || 0)}
             />
