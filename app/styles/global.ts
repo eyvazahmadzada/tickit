@@ -33,6 +33,8 @@ export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
   .card {
     border-radius: 10px;
     height: 48px;
+    background-color: ${({ theme }) => theme.body};
+    color: ${({ theme }) => theme.text};
     filter: ${({ theme }) =>
       theme.body === COLORS.dark
         ? 'drop-shadow(2px 2px 2px rgba(250, 251, 251, 0.25))'

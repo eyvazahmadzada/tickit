@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next"
 import { useState } from "react"
-import styled from "styled-components"
+import styled, { useTheme } from "styled-components"
 import { COLORS } from "../../constants"
+import { Theme } from '../../models'
 
 const OrderTogglerStyle = styled.button`
   display: flex;
@@ -27,6 +28,7 @@ interface Props {
 
 const OrderToggler: NextPage<Props> = ({ onChangeOrder }) => {
   const [isAsc, setIsAsc] = useState(true)
+  const theme = useTheme() as Theme
 
   const changeOrder = () => {
     onChangeOrder(!isAsc)
@@ -35,7 +37,11 @@ const OrderToggler: NextPage<Props> = ({ onChangeOrder }) => {
 
   return (
     <OrderTogglerStyle className="card mr-8" onClick={changeOrder}>
-      <img className={`animate ${!isAsc ? 'rotate' : ''}`} src="/icons/asc.svg" alt="asc" />
+      <img
+        className={`animate ${!isAsc ? 'rotate' : ''}`}
+        src={`/icons/asc${theme.text === COLORS.light ? '-light' : ''}.svg`}
+        alt="asc"
+      />
       <span className="ml-4">{isAsc ? 'ASC' : 'DESC'}</span>
     </OrderTogglerStyle>
   )

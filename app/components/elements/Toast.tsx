@@ -12,7 +12,7 @@ const ToastStyle = styled.div`
   right: -100%;
   width: 300px;
   min-height: 100px;
-  color: ${COLORS.white};
+  color: ${COLORS.white} !important;
   padding: 16px;
   transition: all .3s ease-in-out;
   z-index: 100;

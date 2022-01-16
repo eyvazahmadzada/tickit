@@ -2,7 +2,6 @@
 import { NextPage } from "next"
 import { useRef, useState } from "react"
 import styled from "styled-components"
-import { COLORS } from "../../constants"
 import { Task } from "../../models"
 
 const TaskCardStyle = styled.div`
@@ -11,7 +10,6 @@ const TaskCardStyle = styled.div`
   overflow-x: auto;
   white-space: nowrap;
   width: 100%;
-  background-color: ${COLORS.white};
   padding: 0 16px;
   margin-bottom: 8px;
 
@@ -20,13 +18,11 @@ const TaskCardStyle = styled.div`
     height: 100%;
     padding: 0 16px;
     font-weight: 500;
+    background-color: ${({ theme }) => theme.body};
+    color: ${({ theme }) => theme.text};
 
     &:placeholder {
       color: rgba(0, 32, 63, 0.4);
-    }
-
-    &:disabled {
-      background-color: ${COLORS.white};
     }
 
     &.done {
@@ -43,7 +39,7 @@ const TaskCardStyle = styled.div`
 interface Props {
   content: string
   status: 'done' | 'progress'
-  created_at: number | undefined
+  created_at: number
   onUpdate: (task: Task) => void
   onDelete: () => void
 }

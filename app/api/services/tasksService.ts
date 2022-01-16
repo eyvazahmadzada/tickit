@@ -14,9 +14,9 @@ tasksService.create = async (data: Task): Promise<any> => {
   })
 }
 
-tasksService.read = async (): Promise<any> => {
+tasksService.read = async (searchKeyword: string): Promise<any> => {
   return fetch({
-    url: '/tasks',
+    url: '/tasks' + (searchKeyword ? `?q=${searchKeyword}` : ''),
     method: 'get',
     headers: {
       'public-request': 'true',

@@ -16,6 +16,8 @@ const AddInputStyle = styled.div`
     height: 100%;
     width: 100%;
     font-weight: 500;
+    background-color: ${({ theme }) => theme.body};
+    color: ${({ theme }) => theme.text};
 
     &:placeholder {
       color: rgba(0, 32, 63, 0.4);

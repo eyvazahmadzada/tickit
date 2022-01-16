@@ -1,4 +1,11 @@
-import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit'
+import {
+  createAsyncThunk,
+  createSlice,
+  isFulfilled,
+  isPending,
+  isRejected,
+  PayloadAction,
+} from '@reduxjs/toolkit'
 import tasksService from '../../api/services/tasksService'
 import { Task } from '../../models'
 
@@ -20,9 +27,12 @@ export const createTask = createAsyncThunk('tasks/create', async (task: Task) =>
   return await tasksService.create(task)
 })
 
-export const fetchTasks = createAsyncThunk('tasks/fetch', async () => {
-  return await tasksService.read()
-})
+export const fetchTasks = createAsyncThunk(
+  'tasks/fetch',
+  async (searchKeyword: string | null = null) => {
+    return await tasksService.read(searchKeyword)
+  },
+)
 
 export const updateTask = createAsyncThunk(
   'tasks/update',
@@ -39,7 +49,39 @@ export const deleteTask = createAsyncThunk('tasks/delete', async (id: number) =>
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
-  reducers: {},
+  reducers: {
+    sortTasks(state, { payload }: PayloadAction<{ key: string; isAsc: boolean }>) {
+      const sortBy = payload.key
+      const isAsc = payload.isAsc ?? true
+
+      // Sort by content length
+      if (sortBy === 'length') {
+        state.entities.sort((a, b) => {
+          return isAsc ? a.content.length - b.content.length : b.content.length - a.content.length
+        })
+      }
+
+      // Sort by content in alphabetical order
+      else if (sortBy === 'alphabetical') {
+        if (isAsc) {
+          state.entities.sort((a, b) => {
+            return a.content.localeCompare(b.content)
+          })
+        } else {
+          state.entities.sort((a, b) => {
+            return b.content.localeCompare(a.content)
+          })
+        }
+      }
+
+      // Sort by date
+      else if (sortBy === 'date') {
+        state.entities.sort((a, b) => {
+          return isAsc ? a.updated_at - b.updated_at : b.updated_at - a.updated_at
+        })
+      }
+    },
+  },
   // Note: No need to worry about immutability since Immer handles it
   extraReducers: (builder) => {
     // Add specific fulfilled behavior for each
@@ -78,4 +120,5 @@ const tasksSlice = createSlice({
   },
 })
 
+export const { sortTasks } = tasksSlice.actions
 export const tasksReducer = tasksSlice.reducer

@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next"
 import { useEffect, useState } from "react"
-import styled from "styled-components"
+import styled, { useTheme } from "styled-components"
+import { COLORS } from "../../constants"
+import { Theme } from '../../models'
 
 const SearchBarStyle = styled.div`
   position: relative;
@@ -22,6 +24,8 @@ const SearchBarStyle = styled.div`
     padding-right: 52px;
     height: 100%;
     font-weight: 500;
+    background-color: ${({ theme }) => theme.body};
+    color: ${({ theme }) => theme.text};
 
     &:placeholder {
       color: rgba(0, 32, 63, 0.4);
@@ -47,22 +51,33 @@ interface Props {
 }
 
 const SearchBar: NextPage<Props> = ({ onValueChange }) => {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState<string | null>(null)
+  const theme = useTheme() as Theme
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onValueChange(value)
-    }, 500)
+    if (value !== null) {
+      const timer = setTimeout(() => {
+        onValueChange(value)
+      }, 300)
 
-    return () => clearTimeout(timer)
-  }, [value, onValueChange])
+      return () => clearTimeout(timer)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value])
+
+  const svgPrefix = theme.text === COLORS.light ? '-light' : ''
 
   return (
     <SearchBarStyle className="card">
-      <img src="/icons/search.svg" alt="search" />
-      <input type="text" placeholder="Search tasks..." onChange={(e) => setValue(e.target.value)} value={value} />
-      <button onClick={() => setValue('')} className={value !== '' ? 'show' : ''}>
-        <img src="/icons/close.svg" alt="close" />
+      <img src={`/icons/search${svgPrefix}.svg`} alt="search" />
+      <input
+        type="text"
+        placeholder="Search tasks..."
+        onChange={(e) => setValue(e.target.value)}
+        value={value || ''}
+      />
+      <button onClick={() => setValue('')} className={value ? 'show' : ''}>
+        <img src={`/icons/close${svgPrefix}.svg`} alt="close" />
       </button>
     </SearchBarStyle>
   )

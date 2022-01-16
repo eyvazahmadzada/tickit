@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next"
 import { useRef, useState } from "react"
-import styled from "styled-components"
+import styled, { useTheme } from "styled-components"
 import { COLORS } from "../../constants"
 import useOnClickOutside from "../../hooks/useOnClickOutside"
+import { Theme } from '../../models'
 
 const DropdownStyle = styled.div`
   min-width: 180px;
@@ -14,8 +15,7 @@ const DropdownStyle = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px;
-    background-color: ${COLORS.white};
+    padding: 16px 12px;
 
     > div {
       display: flex;
@@ -75,8 +75,9 @@ interface Props {
 
 const Dropdown: NextPage<Props> = ({ icon, name, items, onSelectItem }) => {
   const ref = useRef(null)
-  const [activeItem, setActiveItem] = useState({ name, key: 'default' })
+  const [activeItem, setActiveItem] = useState<DropdownItem>({ name, key: '' })
   const [isOpen, setisOpen] = useState(false)
+  const theme = useTheme() as Theme
 
   // Click outside dropdown closes it
   useOnClickOutside(ref, () => setisOpen(false))
@@ -87,21 +88,23 @@ const Dropdown: NextPage<Props> = ({ icon, name, items, onSelectItem }) => {
     setisOpen(false)
   }
 
+  const svgPrefix = theme.text === COLORS.light ? '-light' : ''
+
   return (
     <DropdownStyle ref={ref}>
       <button className="card" onClick={() => setisOpen(!isOpen)}>
         <div>
-          <img src={`/icons/${icon}.svg`} alt={icon} />
+          <img src={`/icons/${icon}${svgPrefix}.svg`} alt={icon} />
           <span className="ml-8">{activeItem.name}</span>
         </div>
 
-        <img src={`/icons/arrow-down.svg`} alt="arrow-down" />
+        <img src={`/icons/arrow-down${svgPrefix}.svg`} alt="arrow-down" />
       </button>
 
       <div className={`menu card ${isOpen ? 'open' : ''}`}>
         {items.map(item =>
           <button
-            className={`animate ${item === activeItem ? 'selected' : ''}`}
+            className={`animate ${item.key === activeItem.key ? 'selected' : ''}`}
             key={item.key} onClick={() => selectItem(item)}
           >
             {item.name}

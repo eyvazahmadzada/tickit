@@ -1,6 +1,6 @@
 import type { NextPage } from "next"
 import { useEffect, useState } from "react"
-import { ThemeProvider, useTheme } from "styled-components"
+import { ThemeProvider } from "styled-components"
 import AddInput from "../app/components/elements/AddInput"
 import Dropdown from "../app/components/elements/Dropdown"
 import OrderToggler from "../app/components/elements/OrderToggler"
@@ -11,16 +11,44 @@ import TaskCard from "../app/components/elements/TaskCard"
 import Toast from "../app/components/elements/Toast"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { Task } from "../app/models"
-import { createTask, deleteTask, fetchTasks, updateTask } from "../app/store/slices/tasks"
+import { createTask, deleteTask, fetchTasks, sortTasks, updateTask } from "../app/store/slices/tasks"
 import { GlobalStyles } from "../app/styles/global"
 import { BigText, GreenText, Header, Headline, HideOnMobile, OrangeText, SortWrapper, ToolbarWrapper, Wrapper } from "../app/styles/home"
 import { darkTheme, lightTheme } from "../app/theme"
 
 const Home: NextPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [sortBy, setSortBy] = useState<string>()
+  const [isOrderAsc, setIsOrderAsc] = useState(true)
+  const [keyword, setKeyword] = useState<string | null>(null)
 
   const dispatch = useAppDispatch()
   const tasksState = useAppSelector(state => state.tasks)
+  const tasks = tasksState.entities
+
+  const sortParams = [
+    { name: 'Alphabetical', key: 'alphabetical' },
+    { name: 'Length', key: 'length' },
+    { name: 'Date', key: 'date' }
+  ]
+
+  // Get saved theme choice
+  useEffect(() => {
+    const isDarkModeSaved = localStorage.getItem('darkMode') === 'true'
+    setIsDarkMode(isDarkModeSaved)
+  }, [])
+
+  // Get or search tasks
+  useEffect(() => {
+    dispatch(fetchTasks(keyword))
+  }, [dispatch, keyword])
+
+  // Handle sort and order change
+  useEffect(() => {
+    if (sortBy) {
+      dispatch(sortTasks({ key: sortBy, isAsc: isOrderAsc }))
+    }
+  }, [dispatch, sortBy, isOrderAsc])
 
   // Toggle theme and save the new version
   const toggleTheme = (): void => {
@@ -30,33 +58,7 @@ const Home: NextPage = () => {
     })
   }
 
-  // Get saved theme choice
-  useEffect(() => {
-    const isDarkModeSaved = localStorage.getItem('darkMode') === 'true'
-    setIsDarkMode(isDarkModeSaved)
-
-    dispatch(fetchTasks())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const sortParams = [
-    { name: 'Name', key: 'name' },
-    { name: 'Length', key: 'length' },
-    { name: 'Date', key: 'date' }
-  ]
-
-  const handleSort = (key: string) => {
-    console.log(key)
-  }
-
-  const handleOrder = (isAsc: boolean) => {
-    console.log(isAsc)
-  }
-
-  const handleSearch = (value: string) => {
-    // console.log(value)
-  }
-
+  // Add a new task
   const handleAddTask = (content: string) => {
     const newTask: Task = {
       content,
@@ -66,10 +68,11 @@ const Home: NextPage = () => {
     }
 
     dispatch(createTask(newTask))
+    setKeyword('')
   }
 
+  // Update or delete a task
   const handleUpdateTask = (id: number, task: Task) => dispatch(updateTask({ id, task }))
-
   const handleDeleteTask = (id: number) => dispatch(deleteTask(id))
 
   return (
@@ -94,17 +97,17 @@ const Home: NextPage = () => {
 
         <div className="mt-32">
           <ToolbarWrapper className="mb-16">
-            <SearchBar onValueChange={handleSearch} />
+            <SearchBar onValueChange={(value) => setKeyword(value)} />
             <SortWrapper>
-              <OrderToggler onChangeOrder={handleOrder} />
-              <Dropdown name="Sort by" icon="sort" items={sortParams} onSelectItem={handleSort} />
+              <OrderToggler onChangeOrder={() => setIsOrderAsc(!isOrderAsc)} />
+              <Dropdown name="Sort by" icon="sort" items={sortParams} onSelectItem={(key) => setSortBy(key)} />
             </SortWrapper>
           </ToolbarWrapper>
           <AddInput onAddTask={handleAddTask} />
         </div>
 
         <div className="mt-48">
-          {tasksState.entities.map(task => (
+          {tasks.map(task => (
             <TaskCard
               key={task.id}
               content={task.content}
