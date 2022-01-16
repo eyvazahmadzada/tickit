@@ -5,7 +5,7 @@ import { API_BASE_URL } from '../constants'
 // Configure request params
 const config: AxiosRequestConfig = {
   baseURL: API_BASE_URL,
-  timeout: 6000,
+  timeout: 30000,
 }
 const service: AxiosInstance = axios.create(config)
 const ENTRY_ROUTE: string = '/'
