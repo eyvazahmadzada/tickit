@@ -1,34 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tick It!
+A simple to-do application built with Typescript, Next.js, Redux Toolkit, Styled Components and passion <3. <br />
 
-## Getting Started
+### Important links:
+- [Project design in Figma](https://www.figma.com/file/8ZffADyx3mke1goHuG0RPb/TickIt!?node-id=1%3A326)
+- [Live running version](https://tick-it.vercel.app)
+- [API Collection in Postman](https://app.getpostman.com/run-collection/14517756-8ad7ed48-e628-46ee-9067-5c7ab04dd76c?action=collection%2Ffork&collection-url=entityId%3D14517756-8ad7ed48-e628-46ee-9067-5c7ab04dd76c%26entityType%3Dcollection%26workspaceId%3D8a6c67fc-3ae2-4456-bc91-f27a9d129d47)
+- [Simple back-end with JSON Server](https://github.com/eyvazahmadzada/tickit-server.git)
 
-First, run the development server:
+## Launch
+Run `npm run dev` or `yarn dev` to start the development server. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Tests
+The testing environment is set using **React Testing Library** and **Jest**. Use `npm run test` to run the tests.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Deployment
+The project is deployed with **Vercel** whereas the mock server is running on **Heroku**. Changes are automatically deployed whenever new commits are integrated into the `main` branch.
