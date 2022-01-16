@@ -39,7 +39,7 @@ const OrderToggler: NextPage<Props> = ({ onChangeOrder }) => {
     <OrderTogglerStyle className="card mr-8" onClick={changeOrder}>
       <img
         className={`animate ${!isAsc ? 'rotate' : ''}`}
-        src={`/icons/asc${theme.text === COLORS.light ? '-light' : ''}.svg`}
+        src={`/icons/asc${theme?.text === COLORS.light ? '-light' : ''}.svg`}
         alt="asc"
       />
       <span className="ml-4">{isAsc ? 'ASC' : 'DESC'}</span>

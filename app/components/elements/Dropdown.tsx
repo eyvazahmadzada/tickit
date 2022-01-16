@@ -88,7 +88,7 @@ const Dropdown: NextPage<Props> = ({ icon, name, items, onSelectItem }) => {
     setisOpen(false)
   }
 
-  const svgPrefix = theme.text === COLORS.light ? '-light' : ''
+  const svgPrefix = theme?.text === COLORS.light ? '-light' : ''
 
   return (
     <DropdownStyle ref={ref}>
